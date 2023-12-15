@@ -53,7 +53,7 @@ def analyze_image_and_get_wager_results(uploaded_image):
 
     headers = {
       "Content-Type": "application/json",
-      "Authorization": f"Bearer {api_key}"
+      "Authorization": f"Bearer {api_key}",
       "OpenAI-Organization": f"{org}"
     }
 
