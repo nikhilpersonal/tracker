@@ -46,7 +46,8 @@ def parse_content_to_df(content):
 # Function to analyze the image using GPT-4 Vision API
 def analyze_image_and_get_wager_results(uploaded_image):
     # Replace "YOUR_OPENAI_API_KEY" with your actual OpenAI API key
-    api_key = "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"
+    
+    api_key = st.secrets.OPENAI_API_KEY
     base64_image = encode_image(uploaded_image)
 
     headers = {
