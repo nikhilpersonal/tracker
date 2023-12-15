@@ -54,7 +54,7 @@ def analyze_image_and_get_wager_results(uploaded_image):
     headers = {
       "Content-Type": "application/json",
       "Authorization": f"Bearer {api_key}"
-      "OpenAI-Organization": org
+      "OpenAI-Organization": f"{org}"
     }
 
     prompt = "Analyze the image and provide the results in a table with columns 'Amount Wagered' and 'Amount Won'. DO NOT INCLUDE ANYTHING ELSE IN THE RESPONSE EXCEPT THE TABLE"
