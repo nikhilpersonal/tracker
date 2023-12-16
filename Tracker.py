@@ -16,32 +16,29 @@ def encode_image(uploaded_image):
 # Helper function to parse the content string into a DataFrame
 def parse_content_to_df(content):
     # Find the table inside the Markdown backticks
-    match = re.search(r'```\n([\s\S]*?)\n```', content)
+    
+    lines = [line.strip() for line in content.strip().split('\n') if line.strip()]
 
-    if match:
-        table_md = match.group(1)
+    # Initialize an empty list to hold the data
+    data = []
 
-        # Split the content into lines and then process each line
-        lines = table_md.strip().split("\n")
-        headers = lines[0].split("|")[1:-1]  # Ignore empty strings due to leading and trailing '|'
-        headers = [header.strip() for header in headers]  # Clean up whitespace
-        rows = [
-            [cell.strip() for cell in line.split("|")[1:-1]]  # Ignore empty strings due to leading and trailing '|'
-            for line in lines[2:]  # The first two lines are headers and separator
-        ]
+    # Process each line
+    for line in lines:
+        # Split the line by '|' and filter out empty strings
+        columns = [col.strip() for col in line.split('|') if col.strip()]
+        if columns:
+            data.append(columns)
 
-        # Convert the parsed content into a DataFrame
-        df = pd.DataFrame(rows, columns=headers)
+    # The first item in the list is the header
+    header = data[0]
 
-        # Convert data types to numeric, assuming the dollar sign is present
-        df["Amount Wagered"] = df["Amount Wagered"].replace('[\$,]', '', regex=True).astype(float)
-        df["Amount Won"] = df["Amount Won"].replace('[\$,]', '', regex=True).astype(float)
+    # The rest are data rows
+    rows = data[2:]  # We skip the second line as it is the separator
 
-        return df
-    else:
-        # Return an empty DataFrame if no table is found
-        return pd.DataFrame(columns=["Amount Wagered", "Amount Won"])
-
+    # Create a DataFrame using the header and rows
+    df = pd.DataFrame(rows, columns=header)
+    
+    return df
 
 # Function to analyze the image using GPT-4 Vision API
 def analyze_image_and_get_wager_results(uploaded_image):
@@ -116,10 +113,50 @@ def summarize_csv_data():
     else:
         return 0, 0, 0, 0  # Return 0 if the CSV file does not exist
 
-# Streamlit app main function
+ 
+
+
+def rename(option):
+    global csv_file_path
+    csv_file_path = option + "_betting_results.csv"
+
+
+def usernames():
+    if not os.path.isfile("usernames.csv"):
+        df = pd.DataFrame(columns=['Name'])
+        df.to_csv("usernames.csv", index=False)
+    return pd.read_csv("usernames.csv")
+
+def add_new_user(username):
+    df = pd.read_csv("usernames.csv")
+    new_user = pd.DataFrame([[username]], columns=['Name'])
+    df = pd.concat([df, new_user]).drop_duplicates().reset_index(drop=True)
+    df.to_csv("usernames.csv", index=False)
+
 def main():
     st.title("Nikh's Bet Tracker")
 
+    # Load existing usernames
+    options = usernames()
+
+    # Append "New User" option for adding new usernames
+    options = options.append({'Name': 'New User'}, ignore_index=True)
+
+    # Sidebar dropdown for user selection
+    with st.sidebar:
+        selected_user = st.selectbox('Select User', options['Name'])
+
+        if selected_user == "New User":
+            new_username = st.text_input("Enter your username")
+            if st.button("Add User") and new_username:
+                add_new_user(new_username)
+                st.experimental_rerun()
+
+
+            
+
+    rename(selected_user)
+    
     # Upload image section
     uploaded_image = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
     if uploaded_image is not None:
@@ -130,31 +167,9 @@ def main():
         
         content = analyze_image_and_get_wager_results(uploaded_image)
         st.write(content)
-
-        lines = [line.strip() for line in content.strip().split('\n') if line.strip()]
-
-        # Initialize an empty list to hold the data
-        data = []
-
-        # Process each line
-        for line in lines:
-            # Split the line by '|' and filter out empty strings
-            columns = [col.strip() for col in line.split('|') if col.strip()]
-            if columns:
-                data.append(columns)
-
-        # The first item in the list is the header
-        header = data[0]
-
-        # The rest are data rows
-        rows = data[2:]  # We skip the second line as it is the separator
-
-        # Create a DataFrame using the header and rows
-        df = pd.DataFrame(rows, columns=header)
-
-
         # Create a DataFrame
-        
+        df = parse_content_to_df(content)
+
         # Save the DataFrame to CSV
         save_results_to_csv(df)
 
@@ -166,10 +181,7 @@ def main():
     # Display the cumulative summary table
     
     total_wagered, total_won, record, count = summarize_csv_data()
-    summary_df = pd.DataFrame({
-        "Total Amount Wagered": [total_wagered],
-        "Total Amount Won": [total_won]
-    })
+
     col1, col2= st.columns(2)
     with col1:
         st.metric(label = "Total Amount Wagered", value = "$" + str(total_wagered))
