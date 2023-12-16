@@ -133,6 +133,21 @@ def add_new_user(username):
     df = pd.concat([df, new_user]).drop_duplicates().reset_index(drop=True)
     df.to_csv("usernames.csv", index=False)
 
+def save_to_github(df, filename):
+    # Save DataFrame to CSV in the local git repository
+    df.to_csv(filename, index=False)
+
+    # Git commands to commit and push the changes
+    try:
+        subprocess.run(['git', 'add', filename], check=True)
+        subprocess.run(['git', 'commit', '-m', f'Update {filename}'], check=True)
+        subprocess.run(['git', 'push'], check=True)
+        return True
+    except subprocess.CalledProcessError as e:
+        print("Error with git operation:", e)
+        return False
+
+
 def main():
     st.title("Nikh's Bet Tracker")
 
@@ -140,7 +155,7 @@ def main():
     options = usernames()
 
     new_user_df = pd.DataFrame([['New User']], columns=['Name'])
-
+    save_to_github(new_user_df, 'test.csv')
     # Concatenating with the existing options DataFrame
     options = pd.concat([options, new_user_df], ignore_index=True)
 
@@ -154,7 +169,7 @@ def main():
                 add_new_user(new_username)
                 st.experimental_rerun()
 
-
+    
             
 
     rename(selected_user)
