@@ -139,8 +139,10 @@ def main():
     # Load existing usernames
     options = usernames()
 
-    # Append "New User" option for adding new usernames
-    options = options.append({'Name': 'New User'}, ignore_index=True)
+    new_user_df = pd.DataFrame([['New User']], columns=['Name'])
+
+    # Concatenating with the existing options DataFrame
+    options = pd.concat([options, new_user_df], ignore_index=True)
 
     # Sidebar dropdown for user selection
     with st.sidebar:
