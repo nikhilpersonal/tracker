@@ -156,7 +156,10 @@ def main():
     options = usernames()
 
     new_user_df = pd.DataFrame([['New User']], columns=['Name'])
-    save_to_github(new_user_df, 'test.csv')
+    if save_to_github(options, 'your_file_name.csv'):
+        st.success("File saved to GitHub successfully!")
+    else:
+        st.error("Failed to save file to GitHub.")
     # Concatenating with the existing options DataFrame
     options = pd.concat([options, new_user_df], ignore_index=True)
 
