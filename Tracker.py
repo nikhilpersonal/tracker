@@ -6,6 +6,7 @@ import base64
 import re
 from io import StringIO
 import numpy as np
+import subprocess
 
 
 # Function to encode the image
