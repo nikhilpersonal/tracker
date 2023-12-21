@@ -92,6 +92,7 @@ def analyze_image_and_get_wager_results(uploaded_image):
 
 # Path to CSV file for persisting data
 csv_file_path = "betting_results.csv"
+active_user = "test"
 
 # Function to save bet results to CSV
 def save_results_to_csv(df):
@@ -124,6 +125,8 @@ def summarize_csv_data():
 def rename(option):
     global csv_file_path
     csv_file_path = option + "_betting_results.csv"
+    global active_user
+    active_user = option
 
 
 def usernames():
@@ -171,7 +174,7 @@ def main():
     except:
         st.write("bi")
 
-    
+    st.write(active_user)
     # Upload image section
     uploaded_image = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
     if uploaded_image is not None:
