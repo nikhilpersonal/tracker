@@ -97,12 +97,12 @@ csv_file_path = "betting_results.csv"
 # Function to save bet results to CSV
 def save_results_to_csv(df):
     
-    # if not os.path.isfile(csv_file_path):
-    #     # Create a new DataFrame and CSV file if it doesn't exist
-    #     df.to_csv(csv_file_path, index=False)
-    # else:
-    #     # Otherwise, append to the existing CSV file
-    #     df.to_csv(csv_file_path, mode='a', header=False, index=False)
+    if not os.path.isfile(csv_file_path):
+        # Create a new DataFrame and CSV file if it doesn't exist
+        df.to_csv(csv_file_path, index=False)
+    else:
+        # Otherwise, append to the existing CSV file
+        df.to_csv(csv_file_path, mode='a', header=False, index=False)
 
 # Function to read and summarize the CSV data
 def summarize_csv_data():
