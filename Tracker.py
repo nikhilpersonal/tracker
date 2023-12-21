@@ -7,7 +7,8 @@ import re
 from io import StringIO
 import numpy as np
 import subprocess
-
+git config --global user.email "nkolur2@gmail.com"
+git config --global user.name "Nikhil"
 
 # Function to encode the image
 def encode_image(uploaded_image):
