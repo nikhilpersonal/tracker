@@ -13,9 +13,9 @@ from streamlit_gsheets import GSheetsConnection
 conn = st.connection("gsheets", type=GSheetsConnection)
 t1 = st.text_input("Test")
 try: 
-    conn.read(worksheet = t1) != null:
-    st.write("hi")
-else:
+    df2 = conn.read(worksheet = t1)
+    st.write(df2)
+except:
     st.write("bi")
 
 
