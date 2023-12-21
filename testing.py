@@ -11,7 +11,8 @@ from streamlit_gsheets import GSheetsConnection
 
 
 conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read(worksheet = "usernames.csv")
+df = conn.read(worksheet = "usernames.csv", usecols=[0],
+)
 st.write(df)
 
 
@@ -19,7 +20,6 @@ st.write(df)
 def encode_image(uploaded_image):
     return base64.b64encode(uploaded_image.read()).decode('utf-8')
 
-# Helper function to parse the content string into a DataFrame
 # Helper function to parse the content string into a DataFrame
 def parse_content_to_df(content):
     # Find the table inside the Markdown backticks
