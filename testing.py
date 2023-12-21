@@ -11,9 +11,7 @@ from streamlit_gsheets import GSheetsConnection
 
 
 conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read(worksheet = "usernames.csv", usecols=[0])
-df = df.dropna()
-st.write(df)
+
 
 
 # Function to encode the image
@@ -129,11 +127,10 @@ def rename(option):
 
 
 def usernames():
-    if not os.path.isfile("usernames.csv"):
-        df = pd.DataFrame(columns=['Name'])
-        df.to_csv("usernames.csv", index=False)
-    return pd.read_csv("usernames.csv")
-
+    df = conn.read(worksheet = "usernames.csv", usecols=[0])
+    df = df.dropna()
+    return df
+    
 def add_new_user(username):
     df = pd.read_csv("usernames.csv")
     new_user = pd.DataFrame([[username]], columns=['Name'])
