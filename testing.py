@@ -133,7 +133,7 @@ def usernames():
     
 def add_new_user(username, options):
     df = options
-    df = df[((df.Name != 'New User')]
+    df = df[((df.Name != 'New User'))]
     new_user = pd.DataFrame([[username]], columns=['Name'])
     df = pd.concat([df, new_user]).drop_duplicates().reset_index(drop=True)
     df = conn.update(worksheet = "usernames.csv", data = df)
