@@ -186,6 +186,8 @@ def main():
         # Call the analyze_image function
         
         content = analyze_image_and_get_wager_results(uploaded_image)
+        st.write("Analysis Results:")
+
         st.write(content)
         # Create a DataFrame
         df = parse_content_to_df(content)
@@ -194,10 +196,7 @@ def main():
         save_results_to_csv(df)
 
         # Show the analysis results
-        st.write("Analysis Results:")
         
-        #st.dataframe(wager_results_df)
-
     # Display the cumulative summary table
     
     total_wagered, total_won, record, count = summarize_csv_data()
