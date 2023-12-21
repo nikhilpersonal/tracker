@@ -11,8 +11,12 @@ from streamlit_gsheets import GSheetsConnection
 
 
 conn = st.connection("gsheets", type=GSheetsConnection)
-sheets_info = conn.get_sheets_info()
-st.write(sheets_info)
+t1 = st.text_input("Test")
+if conn.read(worksheet = t1) != null:
+    st.write("hi")
+else:
+    st.write("bi")
+
 
 # Function to encode the image
 def encode_image(uploaded_image):
