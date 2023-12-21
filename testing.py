@@ -13,6 +13,8 @@ from streamlit_gsheets import GSheetsConnection
 conn = st.connection("gsheets", type=GSheetsConnection)
 df = conn.read(worksheet = "usernames.csv", usecols=[0])
 df = df.dropna()
+new_user_df = pd.DataFrame([['New User']], columns=['Name'])
+df = pd.concat([df, new_user_df], ignore_index=True)
 st.write(df)
 
 
