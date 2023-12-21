@@ -7,7 +7,13 @@ import re
 from io import StringIO
 import numpy as np
 import subprocess
+from streamlit_gsheets import GSheetsConnection
 
+
+conn = st.connection("gsheets", type=GSheetsConnection)
+
+df = conn.read()
+st.write(df)
 
 # Function to encode the image
 def encode_image(uploaded_image):
