@@ -11,6 +11,8 @@ from streamlit_gsheets import GSheetsConnection
 
 
 conn = st.connection("gsheets", type=GSheetsConnection)
+sheets_info = conn.get_sheets_info()
+st.write(sheets_info)
 
 # Function to encode the image
 def encode_image(uploaded_image):
@@ -94,12 +96,13 @@ csv_file_path = "betting_results.csv"
 
 # Function to save bet results to CSV
 def save_results_to_csv(df):
-    if not os.path.isfile(csv_file_path):
-        # Create a new DataFrame and CSV file if it doesn't exist
-        df.to_csv(csv_file_path, index=False)
-    else:
-        # Otherwise, append to the existing CSV file
-        df.to_csv(csv_file_path, mode='a', header=False, index=False)
+    
+    # if not os.path.isfile(csv_file_path):
+    #     # Create a new DataFrame and CSV file if it doesn't exist
+    #     df.to_csv(csv_file_path, index=False)
+    # else:
+    #     # Otherwise, append to the existing CSV file
+    #     df.to_csv(csv_file_path, mode='a', header=False, index=False)
 
 # Function to read and summarize the CSV data
 def summarize_csv_data():
@@ -140,19 +143,6 @@ def add_new_user(username, options):
     st.cache_data.clear()
     st.experimental_rerun()
 
-def save_to_github(df, filename):
-    # Save DataFrame to CSV in the local git repository
-    df.to_csv(filename, index=False)
-
-    # Git commands to commit and push the changes
-    try:
-        subprocess.run(['git', 'add', filename], check=True)
-        subprocess.run(['git', 'commit', '-m', f'Update {filename}'], check=True)
-        subprocess.run(['git', 'push'], check=True)
-        return True
-    except subprocess.CalledProcessError as e:
-        print("Error with git operation:", e)
-        return False
 
 
 def main():
