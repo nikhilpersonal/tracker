@@ -10,7 +10,7 @@ import subprocess
 from streamlit_gsheets import GSheetsConnection
 
 
-conn = st.connection("gsheets", type=GSheetsConnection)
+conn = st.connection("tracker", type=GSheetsConnection)
 
 df = conn.read()
 st.write(df)
