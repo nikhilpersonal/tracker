@@ -106,8 +106,9 @@ def save_results_to_csv(df):
 
 # Function to read and summarize the CSV data
 def summarize_csv_data():
-    if os.path.isfile(csv_file_path):
-        df = pd.read_csv(csv_file_path)
+    try:
+        df = conn.read(worksheet = active_user, columns = [0,1])
+        df = df.dropna()
         df['Amount Wagered'] = df['Amount Wagered'].str.replace('$', '').astype(float).astype(int)
         df['Amount Won'] = df['Amount Won'].str.replace('$', '').astype(float).astype(int)
         df['result'] = np.where(df['Amount Won']>df['Amount Wagered'], 1, 0)
@@ -116,7 +117,7 @@ def summarize_csv_data():
         record = df['result'].sum()
         count = df['Amount Wagered'].count()
         return total_wagered, total_won, record, count
-    else:
+    except:
         return 0, 0, 0, 0  # Return 0 if the CSV file does not exist
 
  
