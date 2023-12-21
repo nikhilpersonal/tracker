@@ -11,12 +11,6 @@ from streamlit_gsheets import GSheetsConnection
 
 
 conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read(worksheet = "usernames.csv", usecols=[0])
-df = df.dropna()
-new_user_df = pd.DataFrame([['New User']], columns=['Name'])
-df = pd.concat([df, new_user_df], ignore_index=True)
-st.write(df)
-
 
 # Function to encode the image
 def encode_image(uploaded_image):
@@ -131,11 +125,12 @@ def rename(option):
 
 
 def usernames():
-    if not os.path.isfile("usernames.csv"):
-        df = pd.DataFrame(columns=['Name'])
-        df.to_csv("usernames.csv", index=False)
-    return pd.read_csv("usernames.csv")
-
+    df = conn.read(worksheet = "usernames.csv", usecols=[0])
+    df = df.dropna()
+    new_user_df = pd.DataFrame([['New User']], columns=['Name'])
+    df = pd.concat([df, new_user_df], ignore_index=True)
+    return df
+    
 def add_new_user(username):
     df = pd.read_csv("usernames.csv")
     new_user = pd.DataFrame([[username]], columns=['Name'])
@@ -162,14 +157,6 @@ def main():
 
     # Load existing usernames
     options = usernames()
-
-    new_user_df = pd.DataFrame([['New User']], columns=['Name'])
-    if save_to_github(options, 'your_file_name.csv'):
-        st.success("File saved to GitHub successfully!")
-    else:
-        st.error("Failed to save file to GitHub.")
-    # Concatenating with the existing options DataFrame
-    options = pd.concat([options, new_user_df], ignore_index=True)
 
     # Sidebar dropdown for user selection
     with st.sidebar:
