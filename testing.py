@@ -11,12 +11,6 @@ from streamlit_gsheets import GSheetsConnection
 
 
 conn = st.connection("gsheets", type=GSheetsConnection)
-t1 = st.text_input("Test")
-try: 
-    df2 = conn.read(worksheet = t1)
-    st.write(df2)
-except:
-    st.write("bi")
 
 
 # Function to encode the image
@@ -171,6 +165,12 @@ def main():
             
 
     rename(selected_user)
+    try: 
+        df2 = conn.read(worksheet = selected_user)
+        st.write(df2)
+    except:
+        st.write("bi")
+
     
     # Upload image section
     uploaded_image = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
