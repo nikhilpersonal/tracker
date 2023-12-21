@@ -12,6 +12,7 @@ from streamlit_gsheets import GSheetsConnection
 
 conn = st.connection("gsheets", type=GSheetsConnection)
 df = conn.read(worksheet = "usernames.csv", usecols=[0])
+df = df.dropna()
 st.write(df)
 
 
