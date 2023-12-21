@@ -11,7 +11,7 @@ from streamlit_gsheets import GSheetsConnection
 
 
 conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read()
+df = conn.read(worksheet = "usernames.csv")
 st.write(df)
 
 
