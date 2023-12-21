@@ -12,7 +12,6 @@ from streamlit_gsheets import GSheetsConnection
 
 conn = st.connection("gsheets", type=GSheetsConnection)
 
-
 # Function to encode the image
 def encode_image(uploaded_image):
     return base64.b64encode(uploaded_image.read()).decode('utf-8')
@@ -173,6 +172,7 @@ def main():
     rename(selected_user)
     try: 
         df2 = conn.read(worksheet = selected_user)
+        df2 = df2.dropna()
         st.write(df2)
     except:
         st.write("bi")
