@@ -131,12 +131,13 @@ def usernames():
     df = pd.concat([df, new_user_df], ignore_index=True)
     return df
     
-def add_new_user(username):
-    df = conn.read(worksheet = "usernames.csv", usecols=[0])
-    df = df.dropna()
+def add_new_user(username, options):
+    df = options
     new_user = pd.DataFrame([[username]], columns=['Name'])
     df = pd.concat([df, new_user]).drop_duplicates().reset_index(drop=True)
     df = conn.update(worksheet = "usernames.csv", data = df)
+    st.cache_data.clear()
+    st.experimental_rerun()
 
 def save_to_github(df, filename):
     # Save DataFrame to CSV in the local git repository
@@ -166,7 +167,7 @@ def main():
         if selected_user == "New User":
             new_username = st.text_input("Enter your username")
             if st.button("Add User") and new_username:
-                add_new_user(new_username)
+                add_new_user(new_username, options)
                 st.cache_data.clear()
                 st.experimental_rerun()
 
