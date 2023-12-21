@@ -7,7 +7,7 @@ import re
 from io import StringIO
 import numpy as np
 import subprocess
-import streamlit_gsheets
+import st-gsheets-connection
 from streamlit_gsheets import GSheetsConnection
 
 
