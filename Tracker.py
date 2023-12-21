@@ -10,9 +10,13 @@ import subprocess
 from streamlit_gsheets import GSheetsConnection
 
 
-conn = st.connection("tracker", type=GSheetsConnection)
+conn = st.connection("gsheets", type=GSheetsConnection)
 
-df = conn.read()
+df = conn.read(worksheet="Karan_betting_results",
+    ttl="10m",
+    usecols=[0, 1],
+    nrows=3,
+))
 st.write(df)
 
 # Function to encode the image
