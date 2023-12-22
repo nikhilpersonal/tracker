@@ -187,8 +187,8 @@ def plot_cumulative_score(df):
 
     # Adding labels and title
     ax.set_xlabel('Date')
-    ax.set_ylabel('Cumulative Score Differential')
-    ax.set_title('Cumulative Score Differential by Date')
+    ax.set_ylabel('Cumulative Profit')
+    ax.set_title('Cumulative Profit by Date')
 
     # Formatting date on X-axis
     fig.autofmt_xdate()  # Auto-rotate the date labels
