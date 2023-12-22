@@ -226,13 +226,12 @@ def main():
         profit = total_won-total_wagered
         st.metric(label = "Profit", value =f"${profit}")
         
-    col5,col6 = st.columns(2)
+    col5, col6 = st.columns(2)
     
     with col5:
         t = st.number_input("Unit Size", value = 5)
       
-    with col 6:
-          
+    with col 6: 
         try:
             s = total_won/t
             s = str(s)
