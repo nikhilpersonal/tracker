@@ -159,7 +159,7 @@ def add_new_user(username, options):
     st.experimental_rerun()
 
 def plot_cumulative_score(df):
-    # Data cleaning and preparation as before
+    # Data cleaning and preparation
     df['Amount Wagered'] = df['Amount Wagered'].replace('[\$,]', '', regex=True).astype(float)
     df['Amount Won'] = df['Amount Won'].replace('[\$,]', '', regex=True).astype(float)
     df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%Y', errors='coerce')
@@ -168,20 +168,18 @@ def plot_cumulative_score(df):
     df['Cumulative Profit'] = df['Score Differential'].cumsum()
     df = df.sort_values(by='Date')
 
-    hover_text_color = df['Cumulative Profit'].map(lambda x: 'green' if x >= 0 else 'red')
-
-
     # Use Plotly for an interactive plot with hover functionality
     fig = px.line(df, x='Date', y='Cumulative Profit', 
                   title='Cumulative Profit by Date',
                   labels={'Cumulative Profit': 'Cumulative Profit', 'Date': 'Date'},
-                  markers=True,
-                  hover_data={'Cumulative Profit': True, 'Color': hover_text_color})
-    
+                  markers=True)
+
+    # Customize hover template to include an indicator for positive or negative values
     fig.update_traces(
         hovertemplate="<b>Date:</b> %{x|%Y-%m-%d}<br>" +
-                      "<b>Cumulative Profit:</b> " +
-                      "<span style='color:%{customdata[1]};'>%{y}</span><extra></extra>"
+                      "<b>Cumulative Profit:</b> %{y}" +
+                      "%{customdata[0]}<extra></extra>",
+        customdata=np.where(df['Cumulative Profit']>=0, ' (Positive)', ' (Negative)')
     )
 
     # Add a horizontal line at 0
@@ -191,12 +189,12 @@ def plot_cumulative_score(df):
     fig.update_layout(
         xaxis_title='Date',
         yaxis_title='Cumulative Profit',
-        hovermode='x'
+        hovermode='x unified'
     )
 
     # Display the plot in Streamlit
-    st.write(df)
     st.plotly_chart(fig, use_container_width=True)
+    
 
 def main():
 
@@ -262,7 +260,8 @@ def main():
     with st.expander("Full Results"):
         try:
             results = conn.read(worksheet = active_user)
-            #st.write(results)
+            results = results.dropna()
+            st.write(results)
             i = 1
         except: 
             st.write("No Data")    
