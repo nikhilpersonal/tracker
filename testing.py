@@ -95,20 +95,27 @@ active_user = "test"
 
 # Function to save bet results to CSV
 def save_results_to_csv(df):
-    
-    if not os.path.isfile(csv_file_path):
-        # Create a new DataFrame and CSV file if it doesn't exist
-        df.to_csv(csv_file_path, index=False)
-    else:
-        # Otherwise, append to the existing CSV file
-        df.to_csv(csv_file_path, mode='a', header=False, index=False)
+
+    try:
+        df1 = conn.read(worksheet = active_user, usecols = [0,1])
+        df1 = df.dropna()
+        df = pd.concat([df1, df], ignore_index=True)
+
+    except:
+        df = conn.create(worksheet = active_user, data = df)
+        
+    # if not os.path.isfile(csv_file_path):
+    #     # Create a new DataFrame and CSV file if it doesn't exist
+    #     df.to_csv(csv_file_path, index=False)
+    # else:
+    #     # Otherwise, append to the existing CSV file
+    #     df.to_csv(csv_file_path, mode='a', header=False, index=False)
 
 # Function to read and summarize the CSV data
 def summarize_csv_data():
     try:
         df = conn.read(worksheet = active_user, usecols = [0,1])
         df = df.dropna()
-        st.write(df)
         df['result'] = np.where(df['Amount Won']>df['Amount Wagered'], 1, 0)
         total_wagered = df["Amount Wagered"].sum()
         total_won = df["Amount Won"].sum()
@@ -168,13 +175,6 @@ def main():
             
 
     rename(selected_user)
-    try: 
-        df2 = conn.read(worksheet = active_user, usecols = [0,1])
-        st.write(df2)
-    except:
-        st.write("bi")
-
-    st.write(active_user)
     
     # Upload image section
     uploaded_image = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
