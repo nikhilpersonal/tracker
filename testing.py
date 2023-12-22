@@ -181,22 +181,23 @@ def main():
     rename(selected_user)
     
     # Upload image section
-    uploaded_image = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
-    if uploaded_image is not None:
-        st.image(uploaded_image, width = 250)
+    uploaded_images = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
+    
     # When the user uploads an image and clicks the 'Analyze' button
-    if uploaded_image is not None and st.button("Analyze Image"):
+    if uploaded_images is not None and st.button("Analyze Image"):
         # Call the analyze_image function
-        
-        content = analyze_image_and_get_wager_results(uploaded_image)
-        st.write("Analysis Results:")
-
-        st.write(content)
+        for uploaded_image in uploaded_images:
+            content = analyze_image_and_get_wager_results(uploaded_image)
+            df = parse_content_to_df(content)
+            save_results_to_csv(df)
+            
+            st.write("Analysis Results:")
+            st.write(content)
         # Create a DataFrame
-        df = parse_content_to_df(content)
+        
 
         # Save the DataFrame to CSV
-        save_results_to_csv(df)
+        
 
         # Show the analysis results
         
