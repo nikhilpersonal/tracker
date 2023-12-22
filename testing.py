@@ -214,7 +214,7 @@ def main():
         try:
             results = conn.read(worksheet = active_user)
             st.write(results)  
-        else: 
+        except: 
             st.write("No Data")    
     
 if __name__ == "__main__":
