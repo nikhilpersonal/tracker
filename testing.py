@@ -160,16 +160,13 @@ def plot_cumulative_score(df):
     df['Amount Wagered'] = df['Amount Wagered'].replace('[\$,]', '', regex=True).astype(float)
     df['Amount Won'] = df['Amount Won'].replace('[\$,]', '', regex=True).astype(float)
     
-    st.write(df)
     
     df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%Y', errors='coerce')
     
-    st.write(df)
     
     # Drop rows where 'Date' is NaT (Not a Time) due to incorrect format or being empty
     df = df.dropna(subset=['Date'])
 
-    st.write(df)
     
     # Calculate the 'Score Differential' for each trade
     df['Score Differential'] = df['Amount Won'] - df['Amount Wagered']
@@ -195,7 +192,8 @@ def plot_cumulative_score(df):
     ax.grid(True)  # Add grid for better readability
 
     # Display the plot in Streamlit
-    #st.pyplot(fig)
+    st.write(df)
+    st.pyplot(fig)
 
 
 def main():
