@@ -268,18 +268,20 @@ def main():
         except:
             s= 0
             st.metric(label = "units up/down", value = str(s) + " u")
-    
+    i = 0
     with st.expander("Full Results"):
         try:
             results = conn.read(worksheet = active_user)
             results = results.dropna()
-            #st.write(results) 
-            plot_cumulative_score(results)
+            st.write(results) 
+            i = 1
         except: 
             st.write("No Data")    
     
     
     
+    if i == 1:
+        plot_cumulative_score(results)
 
 
 
