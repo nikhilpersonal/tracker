@@ -215,7 +215,7 @@ def main():
 
     rename(selected_user)
 
-    if selected_user = "Example":
+    if selected_user == "Example":
         with st.echo:
             st.title("Nikh's Bet Tracker")
             st.subheader(f"Current User =  :green[{active_user}]")
