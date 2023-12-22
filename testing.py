@@ -11,6 +11,8 @@ from streamlit_gsheets import GSheetsConnection
 
 
 conn = st.connection("gsheets", type=GSheetsConnection)
+if st.button("refresh):
+    st.cache_data.clear()
 
 # Function to encode the image
 def encode_image(uploaded_image):
@@ -98,7 +100,6 @@ def save_results_to_csv(df):
     try:
         df1 = conn.read(worksheet = active_user, usecols = [0,1])
         df1 = df1.dropna()
-        st.write(df1)
         df = pd.concat([df1, df], ignore_index=True)
         df = conn.update(worksheet = active_user, data = df)
         st.cache_data.clear()
@@ -190,7 +191,7 @@ def main():
         content = analyze_image_and_get_wager_results(uploaded_image)
         st.write("Analysis Results:")
 
-        #st.write(content)
+        st.write(content)
         # Create a DataFrame
         df = parse_content_to_df(content)
 
