@@ -268,7 +268,7 @@ def main():
             st.write("No Data")    
     
 
-    if i = 1:
+    if i == 1:
         plot_cumulative_score(results)
 
 if __name__ == "__main__":
