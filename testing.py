@@ -227,7 +227,7 @@ def main():
         
         try:
             s = total_won/t
-            st.metric(label = :green["units up/down"], value = str(s) + " u")
+            st.metric(label = "units up/down", value = f" :green[str({s})] + " u"")
         except:
             s= 0
             st.metric(label = "units up/down", value = str(s) + " u")
