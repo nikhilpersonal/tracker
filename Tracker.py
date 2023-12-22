@@ -7,13 +7,16 @@ import re
 from io import StringIO
 import numpy as np
 import subprocess
+from streamlit_gsheets import GSheetsConnection
+
+
+conn = st.connection("gsheets", type=GSheetsConnection)
 
 
 # Function to encode the image
 def encode_image(uploaded_image):
     return base64.b64encode(uploaded_image.read()).decode('utf-8')
 
-# Helper function to parse the content string into a DataFrame
 # Helper function to parse the content string into a DataFrame
 def parse_content_to_df(content):
     # Find the table inside the Markdown backticks
@@ -89,29 +92,40 @@ def analyze_image_and_get_wager_results(uploaded_image):
 
 # Path to CSV file for persisting data
 csv_file_path = "betting_results.csv"
+active_user = "test"
 
 # Function to save bet results to CSV
 def save_results_to_csv(df):
-    if not os.path.isfile(csv_file_path):
-        # Create a new DataFrame and CSV file if it doesn't exist
-        df.to_csv(csv_file_path, index=False)
-    else:
-        # Otherwise, append to the existing CSV file
-        df.to_csv(csv_file_path, mode='a', header=False, index=False)
+    try:
+        df1 = conn.read(worksheet = active_user, usecols = [0,1])
+        df1 = df1.dropna()
+        df = pd.concat([df1, df], ignore_index=True)
+        df = conn.update(worksheet = active_user, data = df)
+        st.cache_data.clear()
+
+
+    except:
+        df = conn.create(worksheet = active_user, data = df)
+        
+    # if not os.path.isfile(csv_file_path):
+    #     # Create a new DataFrame and CSV file if it doesn't exist
+    #     df.to_csv(csv_file_path, index=False)
+    # else:
+    #     # Otherwise, append to the existing CSV file
+    #     df.to_csv(csv_file_path, mode='a', header=False, index=False)
 
 # Function to read and summarize the CSV data
 def summarize_csv_data():
-    if os.path.isfile(csv_file_path):
-        df = pd.read_csv(csv_file_path)
-        df['Amount Wagered'] = df['Amount Wagered'].str.replace('$', '').astype(float).astype(int)
-        df['Amount Won'] = df['Amount Won'].str.replace('$', '').astype(float).astype(int)
+    try:
+        df = conn.read(worksheet = active_user, usecols = [0,1])
+        df = df.dropna()
         df['result'] = np.where(df['Amount Won']>df['Amount Wagered'], 1, 0)
         total_wagered = df["Amount Wagered"].sum()
         total_won = df["Amount Won"].sum()
         record = df['result'].sum()
         count = df['Amount Wagered'].count()
         return total_wagered, total_won, record, count
-    else:
+    except:
         return 0, 0, 0, 0  # Return 0 if the CSV file does not exist
 
  
@@ -120,33 +134,27 @@ def summarize_csv_data():
 def rename(option):
     global csv_file_path
     csv_file_path = option + "_betting_results.csv"
+    
+    global active_user
+    active_user = option
 
 
 def usernames():
-    if not os.path.isfile("usernames.csv"):
-        df = pd.DataFrame(columns=['Name'])
-        df.to_csv("usernames.csv", index=False)
-    return pd.read_csv("usernames.csv")
-
-def add_new_user(username):
-    df = pd.read_csv("usernames.csv")
+    df = conn.read(worksheet = "usernames.csv", usecols=[0])
+    df = df.dropna()
+    new_user_df = pd.DataFrame([['New User']], columns=['Name'])
+    df = pd.concat([df, new_user_df], ignore_index=True)
+    return df
+    
+def add_new_user(username, options):
+    df = options
+    df = df[((df.Name != 'New User'))]
     new_user = pd.DataFrame([[username]], columns=['Name'])
     df = pd.concat([df, new_user]).drop_duplicates().reset_index(drop=True)
-    df.to_csv("usernames.csv", index=False)
+    df = conn.update(worksheet = "usernames.csv", data = df)
+    st.cache_data.clear()
+    st.experimental_rerun()
 
-def save_to_github(df, filename):
-    # Save DataFrame to CSV in the local git repository
-    df.to_csv(filename, index=False)
-
-    # Git commands to commit and push the changes
-    try:
-        subprocess.run(['git', 'add', filename], check=True)
-        subprocess.run(['git', 'commit', '-m', f'Update {filename}'], check=True)
-        subprocess.run(['git', 'push'], check=True)
-        return True
-    except subprocess.CalledProcessError as e:
-        print("Error with git operation:", e)
-        return False
 
 
 def main():
@@ -155,13 +163,6 @@ def main():
     # Load existing usernames
     options = usernames()
 
-    new_user_df = pd.DataFrame([['New User']], columns=['Name'])
-    if save_to_github(options, 'your_file_name.csv'):
-        st.success("File saved to GitHub successfully!")
-    
-    # Concatenating with the existing options DataFrame
-    options = pd.concat([options, new_user_df], ignore_index=True)
-
     # Sidebar dropdown for user selection
     with st.sidebar:
         selected_user = st.selectbox('Select User', options['Name'])
@@ -169,35 +170,40 @@ def main():
         if selected_user == "New User":
             new_username = st.text_input("Enter your username")
             if st.button("Add User") and new_username:
-                add_new_user(new_username)
+                add_new_user(new_username, options)
+                st.cache_data.clear()
                 st.experimental_rerun()
 
-    
+        if st.button("Refresh Data"):
+            st.cache_data.clear()
             
 
     rename(selected_user)
     
     # Upload image section
-    uploaded_image = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
-    if uploaded_image is not None:
-        st.image(uploaded_image, width = 250)
+    uploaded_images = st.file_uploader("Upload an image", accept_multiple_files=True)
+    
     # When the user uploads an image and clicks the 'Analyze' button
-    if uploaded_image is not None and st.button("Analyze Image"):
+    if uploaded_images is not None and st.button("Analyze Image"):
         # Call the analyze_image function
-        
-        content = analyze_image_and_get_wager_results(uploaded_image)
-        st.write(content)
+        for uploaded_image in uploaded_images:
+            try:
+                content = analyze_image_and_get_wager_results(uploaded_image)
+                df = parse_content_to_df(content)
+                save_results_to_csv(df)
+                
+                st.write("Bet Results:")
+                st.write(content)
+            except:
+                st.write("no image")
         # Create a DataFrame
-        df = parse_content_to_df(content)
+        
 
         # Save the DataFrame to CSV
-        save_results_to_csv(df)
+        
 
         # Show the analysis results
-        st.write("Analysis Results:")
         
-        #st.dataframe(wager_results_df)
-
     # Display the cumulative summary table
     
     total_wagered, total_won, record, count = summarize_csv_data()
@@ -211,10 +217,10 @@ def main():
     st.metric(label = "Lifetime Record",  value =str(record)+ "-" +str(count))
 
     with st.expander("Full Results"):
-        if os.path.isfile(csv_file_path):
-            results = pd.read_csv(csv_file_path)
+        try:
+            results = conn.read(worksheet = active_user)
             st.write(results)  
-        else: 
+        except: 
             st.write("No Data")    
     
 if __name__ == "__main__":
