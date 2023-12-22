@@ -277,12 +277,12 @@ def main():
             results = conn.read(worksheet = active_user)
             results = results.dropna()
             st.write(results) 
-            plot_cumulative_scote(results)
         except: 
             st.write("No Data")    
     
     
-    
+    plot_cumulative_scote(results)
+
 
 
 
