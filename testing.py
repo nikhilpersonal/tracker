@@ -188,14 +188,14 @@ def main():
         # Call the analyze_image function
         for uploaded_image in uploaded_images:
             try:
-            content = analyze_image_and_get_wager_results(uploaded_image)
-            df = parse_content_to_df(content)
-            save_results_to_csv(df)
-            
-            st.write("Bet Results:")
-            st.write(content)
+                content = analyze_image_and_get_wager_results(uploaded_image)
+                df = parse_content_to_df(content)
+                save_results_to_csv(df)
+                
+                st.write("Bet Results:")
+                st.write(content)
             except:
-            st.write("no image")
+                st.write("no image")
         # Create a DataFrame
         
 
