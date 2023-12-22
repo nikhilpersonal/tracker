@@ -1,8 +1,15 @@
+# #Light Mode
+# [theme]
+# primaryColor = "#8D6E63"
+# backgroundColor = "#EFEBE9"
+# secondaryBackgroundColor = "#D7CCC8"
+# textColor = "#5D4037"
+# font = "serif"
+
+
 [theme]
-primaryColor = "#8D6E63"
-backgroundColor = "#EFEBE9"
-secondaryBackgroundColor = "#D7CCC8"
-textColor = "#5D4037"
-font = "serif"
-
-
+primaryColor="#FF4B4B"
+backgroundColor="#0E1117"
+secondaryBackgroundColor="#262730"
+textColor="#FAFAFA"
+font="sans serif"
