@@ -281,7 +281,7 @@ def main():
             st.write("No Data")    
     
     
-    plot_cumulative_scote(results)
+    plot_cumulative_score(results)
 
 
 
