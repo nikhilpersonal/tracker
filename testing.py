@@ -163,7 +163,7 @@ def plot_cumulative_score(df):
     df = df.dropna(subset=['Date'])
 
     # Calculate the 'Score Differential' for each trade
-    df['Score Differential'] = df['Total Won'] - df['Total Wagered']
+    df['Score Differential'] = df['Amount Won'] - df['Amount Wagered']
 
     # Calculate the cumulative score differential
     df['Cumulative Score Differential'] = df['Score Differential'].cumsum()
