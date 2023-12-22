@@ -100,6 +100,8 @@ def save_results_to_csv(df):
         df1 = conn.read(worksheet = active_user, usecols = [0,1])
         df1 = df.dropna()
         df = pd.concat([df1, df], ignore_index=True)
+        df = conn.update(worksheet = active_user, data = df)
+
 
     except:
         df = conn.create(worksheet = active_user, data = df)
