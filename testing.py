@@ -157,9 +157,12 @@ def add_new_user(username, options):
 
 def plot_cumulative_score(df):
     # Convert the 'Date' column to datetime format, invalid parsing will be set as NaT
+    df['Amount Wagered'] = df['Amount Wagered'].replace('[\$,]', '', regex=True).astype(float)
+    df['Amount Won'] = df['Amount Won'].replace('[\$,]', '', regex=True).astype(float)
+    
     st.write(df)
     
-    df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%yyyy', errors='coerce')
+    df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%Y', errors='coerce')
     
     st.write(df)
     
