@@ -95,14 +95,13 @@ active_user = "test"
 
 # Function to save bet results to CSV
 def save_results_to_csv(df):
-    st.cache_data.clear()
     try:
         df1 = conn.read(worksheet = active_user, usecols = [0,1])
-        df1 = df.dropna()
+        df1 = df1.dropna()
         st.write(df1)
-        st.write(df)
         df = pd.concat([df1, df], ignore_index=True)
         df = conn.update(worksheet = active_user, data = df)
+        st.cache_data.clear()
 
 
     except:
