@@ -223,7 +223,7 @@ def main():
         st.metric(label = "Lifetime Record",  value =str(record)+ "-" +str(count))
     
     with col4:
-        t = st.number_input("Unit Size)
+        t = st.number_input("Unit Size")
         s = total_won/t
         st.metric(label = "units up/down", value = str(s) + "u")
     
