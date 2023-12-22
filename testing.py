@@ -95,10 +95,12 @@ active_user = "test"
 
 # Function to save bet results to CSV
 def save_results_to_csv(df):
-
+    st.cache_data.clear()
     try:
         df1 = conn.read(worksheet = active_user, usecols = [0,1])
         df1 = df.dropna()
+        st.write(df1)
+        st.write(df)
         df = pd.concat([df1, df], ignore_index=True)
         df = conn.update(worksheet = active_user, data = df)
 
@@ -189,7 +191,7 @@ def main():
         content = analyze_image_and_get_wager_results(uploaded_image)
         st.write("Analysis Results:")
 
-        st.write(content)
+        #st.write(content)
         # Create a DataFrame
         df = parse_content_to_df(content)
 
