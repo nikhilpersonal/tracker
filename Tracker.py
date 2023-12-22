@@ -175,7 +175,7 @@ def plot_cumulative_score(df):
     fig = px.line(df, x='Date', y='Cumulative Profit', 
                   title='Cumulative Profit by Date',
                   labels={'Cumulative Profit': 'Cumulative Profit', 'Date': 'Date'},
-                  markers=True),
+                  markers=True,
                   hover_data={'Cumulative Profit': True, 'Color': hover_text_color})
 
 
