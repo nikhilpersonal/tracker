@@ -8,7 +8,7 @@ from io import StringIO
 import numpy as np
 import subprocess
 from streamlit_gsheets import GSheetsConnection
-
+import matplotlib.pyplot as plt
 
 conn = st.connection("gsheets", type=GSheetsConnection)
 
