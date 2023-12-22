@@ -109,8 +109,6 @@ def summarize_csv_data():
         df = conn.read(worksheet = active_user, usecols = [0,1])
         df = df.dropna()
         st.write(df)
-        df['Amount Wagered'] = df['Amount Wagered'].str.replace('$', '').astype(float).astype(int)
-        df['Amount Won'] = df['Amount Won'].str.replace('$', '').astype(float).astype(int)
         df['result'] = np.where(df['Amount Won']>df['Amount Wagered'], 1, 0)
         total_wagered = df["Amount Wagered"].sum()
         total_won = df["Amount Won"].sum()
