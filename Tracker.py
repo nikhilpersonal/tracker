@@ -158,7 +158,6 @@ def add_new_user(username, options):
 
 
 def main():
-    st.title("Nikh's Bet Tracker")
 
     # Load existing usernames
     options = usernames()
@@ -179,6 +178,9 @@ def main():
             
 
     rename(selected_user)
+
+    st.title("Nikh's Bet Tracker")
+    st.markdown(f""Current User = " + active_user")
     
     # Upload image section
     uploaded_images = st.file_uploader("Upload an image", accept_multiple_files=True)
