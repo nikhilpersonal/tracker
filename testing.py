@@ -92,7 +92,7 @@ def analyze_image_and_get_wager_results(uploaded_image):
 
 # Path to CSV file for persisting data
 csv_file_path = "betting_results.csv"
-active_user = "test"
+active_user = "Example"
 
 # Function to save bet results to CSV
 def save_results_to_csv(df):
