@@ -159,6 +159,7 @@ def add_new_user(username, options):
 
 def main():
     st.title("Nikh's Bet Tracker")
+    st.subheader("Selected User = " + active_user)
 
     # Load existing usernames
     options = usernames()
@@ -181,21 +182,22 @@ def main():
     rename(selected_user)
     
     # Upload image section
-    uploaded_images = st.file_uploader("Upload an image", accept_multiple_files=True)
+    uploaded_images = st.file_uploader("Upload one or multiple slips:", accept_multiple_files=True)
     
     # When the user uploads an image and clicks the 'Analyze' button
-    if uploaded_images is not None and st.button("Analyze Image"):
+    if uploaded_images is not None:
         # Call the analyze_image function
-        for uploaded_image in uploaded_images:
-            try:
-                content = analyze_image_and_get_wager_results(uploaded_image)
-                df = parse_content_to_df(content)
-                save_results_to_csv(df)
-                
-                st.write("Bet Results:")
-                st.write(content)
-            except:
-                st.write("no image")
+        if st.button("Analyze Image"):
+            for uploaded_image in uploaded_images:
+                try:
+                    content = analyze_image_and_get_wager_results(uploaded_image)
+                    df = parse_content_to_df(content)
+                    save_results_to_csv(df)
+                    
+                    st.write("Bet Results:")
+                    st.write(content)
+                except:
+                    st.write("no image")
         # Create a DataFrame
         
 
