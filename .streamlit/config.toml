@@ -1,10 +1,10 @@
 
-[theme]
-primaryColor = "#8D6E63"
-backgroundColor = "#EFEBE9"
-secondaryBackgroundColor = "#D7CCC8"
-textColor = "#5D4037"
-font = "serif"
+# [theme]
+# primaryColor = "#8D6E63"
+# backgroundColor = "#EFEBE9"
+# secondaryBackgroundColor = "#D7CCC8"
+# textColor = "#5D4037"
+# font = "serif"
 
 
 # [theme]
