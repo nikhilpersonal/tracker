@@ -181,7 +181,7 @@ def main():
     rename(selected_user)
     
     st.title("Nikh's Bet Tracker")
-    st.subheader("Selected User = " + active_user)
+    st.subheader("Current User = " + active_user)
     
     # Upload image section
     uploaded_images = st.file_uploader("Upload one or multiple slips:", accept_multiple_files=True)
