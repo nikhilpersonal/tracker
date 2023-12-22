@@ -195,6 +195,7 @@ def plot_cumulative_score(df):
     )
 
     # Display the plot in Streamlit
+    st.write(df)
     st.plotly_chart(fig, use_container_width=True)
 
 def main():
@@ -261,7 +262,7 @@ def main():
     with st.expander("Full Results"):
         try:
             results = conn.read(worksheet = active_user)
-            st.write(results)
+            #st.write(results)
             i = 1
         except: 
             st.write("No Data")    
