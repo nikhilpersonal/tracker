@@ -223,7 +223,9 @@ def main():
         st.metric(label = "Lifetime Record",  value =str(record)+ "-" +str(count))
     
     with col4:
-            
+        profit = total_won-total_wagered
+        st.metric(label = "Profit", value =f"${profit}")
+        
     col5,col6 = st.columns(2)
     
     with col5:
