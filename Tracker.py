@@ -195,10 +195,10 @@ def plot_cumulative_score(df):
     
 
 def main():
+    st.markdown('<style>body{background-color: Blue;}</style>',unsafe_allow_html=True)
 
     # Load existing usernames
     options = usernames()
-    st.markdown('<style>body{background-color: Blue;}</style>',unsafe_allow_html=True)
     # Sidebar dropdown for user selection
     with st.sidebar:
         selected_user = st.selectbox('Select User', options['Name'])
