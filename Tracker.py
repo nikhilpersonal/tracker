@@ -158,11 +158,17 @@ def add_new_user(username, options):
 
 def plot_cumulative_score(df):
     # Convert the 'Date' column to datetime format, invalid parsing will be set as NaT
-    df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%y', errors='coerce')
-
+    df['Amount Wagered'] = df['Amount Wagered'].replace('[\$,]', '', regex=True).astype(float)
+    df['Amount Won'] = df['Amount Won'].replace('[\$,]', '', regex=True).astype(float)
+    
+    
+    df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%Y', errors='coerce')
+    
+    
     # Drop rows where 'Date' is NaT (Not a Time) due to incorrect format or being empty
     df = df.dropna(subset=['Date'])
 
+    
     # Calculate the 'Score Differential' for each trade
     df['Score Differential'] = df['Amount Won'] - df['Amount Wagered']
 
@@ -175,6 +181,9 @@ def plot_cumulative_score(df):
     # Plot the trendline
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.plot(df['Date'], df['Cumulative Score Differential'], marker='o')
+
+
+    ax.axhline(0, color='green', linewidth=1.5)  # Solid black line at y=0
 
     # Adding labels and title
     ax.set_xlabel('Date')
@@ -249,17 +258,18 @@ def main():
         st.metric(label = "Total Won", value = "$" + str(total_won))
     
     st.metric(label = "Lifetime Record",  value =str(record)+ "-" +str(count))
-
+    i = 0
     with st.expander("Full Results"):
         try:
             results = conn.read(worksheet = active_user)
             st.write(results)
-            plot_cumulative_score(results)
-
+            i = 1
         except: 
             st.write("No Data")    
     
 
-    
+    if i = 1:
+        plot_cumulative_score(results)
+
 if __name__ == "__main__":
     main()
