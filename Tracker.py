@@ -170,7 +170,7 @@ def plot_cumulative_score(df):
 
     # Create a new column for hover text
     df['Hover Text'] = df['Cumulative Profit'].apply(
-        lambda x: f"{x} (Positive)" if x >= 0 else f"{x} (Negative)"
+        lambda x: f"{x:.2f} (Profit)" if x >= 0 else f"{x:.2f} (Loss)"
     )
 
     # Use Plotly for an interactive plot with hover functionality
@@ -178,7 +178,7 @@ def plot_cumulative_score(df):
                   title='Cumulative Profit by Date',
                   labels={'Cumulative Profit': 'Cumulative Profit', 'Date': 'Date'},
                   markers=True,
-                  hover_data={'Cumulative Profit': False, 'Hover Text': True})
+                  hover_data={'Cumulative Profit': False, 'Cumulative Profit': True})
 
     # Add a horizontal line at 0
     fig.add_hline(y=0, line_color='green', line_width=1.5)
