@@ -106,7 +106,7 @@ def save_results_to_csv(df):
 # Function to read and summarize the CSV data
 def summarize_csv_data():
     try:
-        df = conn.read(worksheet = active_user, columns = [0,1])
+        df = conn.read(worksheet = active_user, usecols = [0,1])
         df = df.dropna()
         st.write(df)
         df['Amount Wagered'] = df['Amount Wagered'].str.replace('$', '').astype(float).astype(int)
@@ -171,8 +171,7 @@ def main():
 
     rename(selected_user)
     try: 
-        df2 = conn.read(worksheet = selected_user)
-        df2 = df2.dropna()
+        df2 = conn.read(worksheet = active_user, usecols = [0,1])
         st.write(df2)
     except:
         st.write("bi")
