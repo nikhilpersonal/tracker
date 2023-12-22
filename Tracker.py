@@ -168,11 +168,22 @@ def plot_cumulative_score(df):
     df['Cumulative Profit'] = df['Score Differential'].cumsum()
     df = df.sort_values(by='Date')
 
+    hover_text_color = df['Cumulative Profit'].map(lambda x: 'green' if x >= 0 else 'red')
+
+
     # Use Plotly for an interactive plot with hover functionality
     fig = px.line(df, x='Date', y='Cumulative Profit', 
                   title='Cumulative Profit by Date',
                   labels={'Cumulative Profit': 'Cumulative Profit', 'Date': 'Date'},
-                  markers=True)
+                  markers=True),
+                  hover_data={'Cumulative Profit': True, 'Color': hover_text_color})
+
+
+     fig.update_traces(
+        hovertemplate="<b>Date:</b> %{x|%Y-%m-%d}<br>" +
+                      "<b>Cumulative Profit:</b> " +
+                      "<span style='color:%{customdata[1]};'>%{y}</span><extra></extra>"
+    )
 
     # Add a horizontal line at 0
     fig.add_hline(y=0, line_color='green', line_width=1.5)
