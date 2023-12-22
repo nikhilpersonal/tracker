@@ -168,13 +168,17 @@ def plot_cumulative_score(df):
     df['Cumulative Profit'] = df['Score Differential'].cumsum()
     df = df.sort_values(by='Date')
 
+
+    df_grouped = df.groupby('Date')['Score Differential'].sum().cumsum().reset_index()
+    df_grouped.rename(columns={'Score Differential': 'Cumulative Profit'}, inplace=True)
+
     # Create a new column for hover text
-    df['Results'] = df['Cumulative Profit'].apply(
-        lambda x: f"{x:.2f} (Profit)" if x >= 0 else f"{x:.2f} (Loss)"
+    df_grouped['Results'] = df_grouped['Cumulative Profit'].apply(
+        lambda x: f"{x:.2f} (Positive)" if x >= 0 else f"{x:.2f} (Negative)"
     )
 
     # Use Plotly for an interactive plot with hover functionality
-    fig = px.line(df, x='Date', y='Cumulative Profit', 
+    fig = px.line(df_grouped, x='Date', y='Cumulative Profit', 
                   title='Cumulative Profit by Date',
                   labels={'Cumulative Profit': 'Cumulative Profit'},
                   markers=True,
