@@ -221,6 +221,7 @@ def main():
     col3, col4 = st.columns(2)
     with col3:
         st.metric(label = "Lifetime Record",  value =str(record)+ "-" +str(count))
+    
     with col4:
         t = st.number_input("Unit Size)
         s = total_won/t
