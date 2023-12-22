@@ -159,7 +159,7 @@ def add_new_user(username, options):
     st.experimental_rerun()
 
 def plot_cumulative_score(df):
-    # Data cleaning and preparation
+     # Data cleaning and preparation
     df['Amount Wagered'] = df['Amount Wagered'].replace('[\$,]', '', regex=True).astype(float)
     df['Amount Won'] = df['Amount Won'].replace('[\$,]', '', regex=True).astype(float)
     df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%Y', errors='coerce')
@@ -168,19 +168,17 @@ def plot_cumulative_score(df):
     df['Cumulative Profit'] = df['Score Differential'].cumsum()
     df = df.sort_values(by='Date')
 
+    # Create a new column for hover text
+    df['Hover Text'] = df['Cumulative Profit'].apply(
+        lambda x: f"{x} (Positive)" if x >= 0 else f"{x} (Negative)"
+    )
+
     # Use Plotly for an interactive plot with hover functionality
     fig = px.line(df, x='Date', y='Cumulative Profit', 
                   title='Cumulative Profit by Date',
                   labels={'Cumulative Profit': 'Cumulative Profit', 'Date': 'Date'},
-                  markers=True)
-
-    # Customize hover template to include an indicator for positive or negative values
-    fig.update_traces(
-        hovertemplate="<b>Date:</b> %{x|%Y-%m-%d}<br>" +
-                      "<b>Cumulative Profit:</b> %{y}" +
-                      "%{customdata[0]}<extra></extra>",
-        customdata=np.where(df['Cumulative Profit']>=0, ' (Positive)', ' (Negative)')
-    )
+                  markers=True,
+                  hover_data={'Cumulative Profit': False, 'Hover Text': True})
 
     # Add a horizontal line at 0
     fig.add_hline(y=0, line_color='green', line_width=1.5)
