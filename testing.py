@@ -211,8 +211,8 @@ def main():
     st.metric(label = "Lifetime Record",  value =str(record)+ "-" +str(count))
 
     with st.expander("Full Results"):
-        if os.path.isfile(csv_file_path):
-            results = pd.read_csv(csv_file_path)
+        try:
+            results = conn.read(worksheet = active_user)
             st.write(results)  
         else: 
             st.write("No Data")    
