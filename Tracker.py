@@ -195,7 +195,6 @@ def plot_cumulative_score(df):
     
 
 def main():
-    st.markdown('<style>body{background-color: Blue;}</style>',unsafe_allow_html=True)
 
     # Load existing usernames
     options = usernames()
@@ -216,57 +215,110 @@ def main():
 
     rename(selected_user)
 
-    st.title("Nikh's Bet Tracker")
-    st.subheader(f"Current User =  :green[{active_user}]")
-    
-    # Upload image section
-    uploaded_images = st.file_uploader("Upload an image", accept_multiple_files=True)
-    
-    # When the user uploads an image and clicks the 'Analyze' button
-    if uploaded_images is not None and st.button("Analyze Image"):
-        # Call the analyze_image function
-        for uploaded_image in uploaded_images:
-            try:
-                content = analyze_image_and_get_wager_results(uploaded_image)
-                df = parse_content_to_df(content)
-                save_results_to_csv(df)
+    if selected_user = "Example":
+        with st.echo:
+            st.title("Nikh's Bet Tracker")
+            st.subheader(f"Current User =  :green[{active_user}]")
+            
+            # Upload image section
+            uploaded_images = st.file_uploader("Upload an image", accept_multiple_files=True)
+            
+            # When the user uploads an image and clicks the 'Analyze' button
+            if uploaded_images is not None and st.button("Analyze Image"):
+                # Call the analyze_image function
+                for uploaded_image in uploaded_images:
+                    try:
+                        content = analyze_image_and_get_wager_results(uploaded_image)
+                        df = parse_content_to_df(content)
+                        save_results_to_csv(df)
+                        
+                        st.write("Bet Results:")
+                        st.write(content)
+                    except:
+                        st.write("no image")
+                # Create a DataFrame
                 
-                st.write("Bet Results:")
-                st.write(content)
-            except:
-                st.write("no image")
-        # Create a DataFrame
         
-
-        # Save the DataFrame to CSV
+                # Save the DataFrame to CSV
+                
         
-
-        # Show the analysis results
+                # Show the analysis results
+                
+            # Display the cumulative summary table
+            
+            total_wagered, total_won, record, count = summarize_csv_data()
         
-    # Display the cumulative summary table
+            col1, col2= st.columns(2)
+            with col1:
+                st.metric(label = "Total Amount Wagered", value = "$" + str(total_wagered))
+            with col2:
+                st.metric(label = "Total Won", value = "$" + str(total_won))
+            
+            st.metric(label = "Lifetime Record",  value =str(record)+ "-" +str(count))
+            i = 0
+            with st.expander("Full Results"):
+                try:
+                    results = conn.read(worksheet = active_user)
+                    results = results.dropna()
+                    st.write(results)
+                    i = 1
+                except: 
+                    st.write("No Data")    
+            
+        
+            if i == 1:
+                plot_cumulative_score(results)
+    else:
+        st.title("Nikh's Bet Tracker")
+        st.subheader(f"Current User =  :green[{active_user}]")
+        
+        # Upload image section
+        uploaded_images = st.file_uploader("Upload an image", accept_multiple_files=True)
+        
+        # When the user uploads an image and clicks the 'Analyze' button
+        if uploaded_images is not None and st.button("Analyze Image"):
+            # Call the analyze_image function
+            for uploaded_image in uploaded_images:
+                try:
+                    content = analyze_image_and_get_wager_results(uploaded_image)
+                    df = parse_content_to_df(content)
+                    save_results_to_csv(df)
+                    
+                    st.write("Bet Results:")
+                    st.write(content)
+                except:
+                    st.write("no image")
+            # Create a DataFrame
+            
     
-    total_wagered, total_won, record, count = summarize_csv_data()
-
-    col1, col2= st.columns(2)
-    with col1:
-        st.metric(label = "Total Amount Wagered", value = "$" + str(total_wagered))
-    with col2:
-        st.metric(label = "Total Won", value = "$" + str(total_won))
+            # Save the DataFrame to CSV
+            
     
-    st.metric(label = "Lifetime Record",  value =str(record)+ "-" +str(count))
-    i = 0
-    with st.expander("Full Results"):
-        try:
-            results = conn.read(worksheet = active_user)
-            results = results.dropna()
-            st.write(results)
-            i = 1
-        except: 
-            st.write("No Data")    
+            # Show the analysis results
+            
+        # Display the cumulative summary table
+        
+        total_wagered, total_won, record, count = summarize_csv_data()
     
-
-    if i == 1:
-        plot_cumulative_score(results)
-
+        col1, col2= st.columns(2)
+        with col1:
+            st.metric(label = "Total Amount Wagered", value = "$" + str(total_wagered))
+        with col2:
+            st.metric(label = "Total Won", value = "$" + str(total_won))
+        
+        st.metric(label = "Lifetime Record",  value =str(record)+ "-" +str(count))
+        i = 0
+        with st.expander("Full Results"):
+            try:
+                results = conn.read(worksheet = active_user)
+                results = results.dropna()
+                st.write(results)
+                i = 1
+            except: 
+                st.write("No Data")    
+        
+    
+        if i == 1:
+            plot_cumulative_score(results)
 if __name__ == "__main__":
     main()
