@@ -177,9 +177,8 @@ def plot_cumulative_score(df):
                   labels={'Cumulative Profit': 'Cumulative Profit', 'Date': 'Date'},
                   markers=True,
                   hover_data={'Cumulative Profit': True, 'Color': hover_text_color})
-
-
-     fig.update_traces(
+    
+    fig.update_traces(
         hovertemplate="<b>Date:</b> %{x|%Y-%m-%d}<br>" +
                       "<b>Cumulative Profit:</b> " +
                       "<span style='color:%{customdata[1]};'>%{y}</span><extra></extra>"
