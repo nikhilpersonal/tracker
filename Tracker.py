@@ -100,7 +100,7 @@ active_user = "test"
 # Function to save bet results to CSV
 def save_results_to_csv(df):
     try:
-        df1 = conn.read(worksheet = active_user, usecols = [0,1])
+        df1 = conn.read(worksheet = active_user, usecols = [0,1,2])
         df1 = df1.dropna()
         df = pd.concat([df1, df], ignore_index=True)
         df = conn.update(worksheet = active_user, data = df)
