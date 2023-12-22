@@ -137,7 +137,7 @@ def rename(option):
     
     global active_user
     active_user = option
-
+    st.cache_data.clear()
 
 def usernames():
     df = conn.read(worksheet = "usernames.csv", usecols=[0])
