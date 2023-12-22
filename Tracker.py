@@ -253,9 +253,11 @@ def main():
         try:
             results = conn.read(worksheet = active_user)
             st.write(results)
-            plot_cumulative_score(results)
         except: 
             st.write("No Data")    
+    
+    plot_cumulative_score(results)
+
     
 if __name__ == "__main__":
     main()
