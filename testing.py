@@ -217,12 +217,19 @@ def main():
         st.metric(label = "Total Amount Wagered", value = "$" + str(total_wagered))
     with col2:
         st.metric(label = "Total Won", value = "$" + str(total_won))
-    
-    st.metric(label = "Lifetime Record",  value =str(record)+ "-" +str(count))
 
+    col3, col4 = st.columns(2)
+    with col3:
+        st.metric(label = "Lifetime Record",  value =str(record)+ "-" +str(count))
+    with col4:
+        t = st.number_input("Unit Size)
+        s = total_won/t
+        st.metric(label = "units up/down", value = str(s) + "u")
+    
     with st.expander("Full Results"):
         try:
             results = conn.read(worksheet = active_user)
+            results = results.dropna()
             st.write(results)  
         except: 
             st.write("No Data")    
