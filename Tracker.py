@@ -180,7 +180,7 @@ def main():
     rename(selected_user)
 
     st.title("Nikh's Bet Tracker")
-    st.markdown(f"Current User =  :green[{active_user}]")
+    st.subheader(f"Current User =  :green[{active_user}]")
     
     # Upload image section
     uploaded_images = st.file_uploader("Upload an image", accept_multiple_files=True)
