@@ -193,6 +193,7 @@ def plot_cumulative_score(df):
 
     # Display the plot in Streamlit
     st.pyplot(fig)
+    st.write(df)
 
 
 def main():
