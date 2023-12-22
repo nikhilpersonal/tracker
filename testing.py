@@ -179,6 +179,7 @@ def main():
             
 
     rename(selected_user)
+    
     st.title("Nikh's Bet Tracker")
     st.subheader("Selected User = " + active_user)
     
