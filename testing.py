@@ -157,12 +157,16 @@ def add_new_user(username, options):
 
 def plot_cumulative_score(df):
     # Convert the 'Date' column to datetime format, invalid parsing will be set as NaT
+    st.write(df)
+    
     df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%y', errors='coerce')
-
+    
+    st.write(df)
+    
     # Drop rows where 'Date' is NaT (Not a Time) due to incorrect format or being empty
     df = df.dropna(subset=['Date'])
 
-    st.write(df)
+    
     
     # Calculate the 'Score Differential' for each trade
     df['Score Differential'] = df['Amount Won'] - df['Amount Wagered']
