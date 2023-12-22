@@ -224,11 +224,14 @@ def main():
     
     with col4:
         t = st.number_input("Unit Size")
+        
         try:
             s = total_won/t
+            st.metric(label = "units up/down", value = str(s) + "u")
         except:
             s= 5
-        st.metric(label = "units up/down", value = str(s) + "u")
+            st.metric(label = "units up/down", value = str(s) + "u")
+        
     
     with st.expander("Full Results"):
         try:
