@@ -181,6 +181,9 @@ def plot_cumulative_score(df):
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.plot(df['Date'], df['Cumulative Score Differential'], marker='o')
 
+
+    ax.axhline(0, color='green', linewidth=1.5)  # Solid black line at y=0
+
     # Adding labels and title
     ax.set_xlabel('Date')
     ax.set_ylabel('Cumulative Score Differential')
