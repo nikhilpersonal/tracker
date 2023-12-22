@@ -157,7 +157,7 @@ def add_new_user(username, options):
     st.cache_data.clear()
     st.experimental_rerun()
 
-def plot_cumulative_score_with_plotly(df):
+def plot_cumulative_score(df):
     # Data cleaning and preparation as before
     df['Amount Wagered'] = df['Amount Wagered'].replace('[\$,]', '', regex=True).astype(float)
     df['Amount Won'] = df['Amount Won'].replace('[\$,]', '', regex=True).astype(float)
