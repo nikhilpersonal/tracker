@@ -9,6 +9,8 @@ import numpy as np
 import subprocess
 from streamlit_gsheets import GSheetsConnection
 import matplotlib.pyplot as plt
+import plotly.express as px
+
 
 conn = st.connection("gsheets", type=GSheetsConnection)
 
@@ -155,49 +157,34 @@ def add_new_user(username, options):
     st.cache_data.clear()
     st.experimental_rerun()
 
-def plot_cumulative_score(df):
-    # Convert the 'Date' column to datetime format, invalid parsing will be set as NaT
+def plot_cumulative_score_with_plotly(df):
+    # Data cleaning and preparation as before
     df['Amount Wagered'] = df['Amount Wagered'].replace('[\$,]', '', regex=True).astype(float)
     df['Amount Won'] = df['Amount Won'].replace('[\$,]', '', regex=True).astype(float)
-    
-    
     df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%Y', errors='coerce')
-    
-    
-    # Drop rows where 'Date' is NaT (Not a Time) due to incorrect format or being empty
     df = df.dropna(subset=['Date'])
-
-    
-    # Calculate the 'Score Differential' for each trade
     df['Score Differential'] = df['Amount Won'] - df['Amount Wagered']
-
-    # Calculate the cumulative score differential
     df['Cumulative Score Differential'] = df['Score Differential'].cumsum()
-
-    # Sort the DataFrame by the 'Date' column
     df = df.sort_values(by='Date')
 
-    # Plot the trendline
-    fig, ax = plt.subplots(figsize=(10, 6))
-    ax.plot(df['Date'], df['Cumulative Score Differential'], marker='o')
+    # Use Plotly for an interactive plot with hover functionality
+    fig = px.line(df, x='Date', y='Cumulative Score Differential', 
+                  title='Cumulative Score Differential by Date',
+                  labels={'Cumulative Score Differential': 'Cumulative Score Differential', 'Date': 'Date'},
+                  markers=True)
 
+    # Add a horizontal line at 0
+    fig.add_hline(y=0, line_color='green', line_width=1.5)
 
-    ax.axhline(0, color='green', linewidth=1.5)  # Solid black line at y=0
-
-    # Adding labels and title
-    ax.set_xlabel('Date')
-    ax.set_ylabel('Cumulative Score Differential')
-    ax.set_title('Cumulative Score Differential by Date')
-
-    # Formatting date on X-axis
-    fig.autofmt_xdate()  # Auto-rotate the date labels
-
-    ax.grid(True)  # Add grid for better readability
+    # Improve layout
+    fig.update_layout(
+        xaxis_title='Date',
+        yaxis_title='Cumulative Score Differential',
+        hovermode='x'
+    )
 
     # Display the plot in Streamlit
-    st.write(df)
-    st.pyplot(fig)
-
+    st.plotly_chart(fig, use_container_width=True)
 
 def main():
    
