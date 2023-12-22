@@ -1,6 +1,14 @@
+# Option 1
+# [theme]
+# primaryColor = "#8D6E63"
+# backgroundColor = "#EFEBE9"
+# secondaryBackgroundColor = "#D7CCC8"
+# textColor = "#5D4037"
+# font = "serif"
+
 [theme]
-primaryColor = "#8D6E63"
-backgroundColor = "#EFEBE9"
-secondaryBackgroundColor = "#D7CCC8"
-textColor = "#5D4037"
-font = "serif"
+primaryColor = "#1E88E5"  # A strong, trustworthy blue
+backgroundColor = "#E3F2FD"  # Light blue for a clean background
+secondaryBackgroundColor = "#E0E0E0"  # Gray for secondary elements
+textColor = "#37474F"  # Dark gray for readability and professionalism
+font = "sans serif"  # A modern, clean font
