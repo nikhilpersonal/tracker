@@ -231,7 +231,7 @@ def main():
     with col5:
         t = st.number_input("Unit Size", value = 5)
       
-    with col 6: 
+    with col6: 
         try:
             s = total_won/t
             s = str(s)
