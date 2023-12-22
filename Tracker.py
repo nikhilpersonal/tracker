@@ -155,7 +155,38 @@ def add_new_user(username, options):
     st.cache_data.clear()
     st.experimental_rerun()
 
+def plot_cumulative_score(df):
+    # Convert the 'Date' column to datetime format, invalid parsing will be set as NaT
+    df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%y', errors='coerce')
 
+    # Drop rows where 'Date' is NaT (Not a Time) due to incorrect format or being empty
+    df = df.dropna(subset=['Date'])
+
+    # Calculate the 'Score Differential' for each trade
+    df['Score Differential'] = df['Amount Won'] - df['Amount Wagered']
+
+    # Calculate the cumulative score differential
+    df['Cumulative Score Differential'] = df['Score Differential'].cumsum()
+
+    # Sort the DataFrame by the 'Date' column
+    df = df.sort_values(by='Date')
+
+    # Plot the trendline
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(df['Date'], df['Cumulative Score Differential'], marker='o')
+
+    # Adding labels and title
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Cumulative Score Differential')
+    ax.set_title('Cumulative Score Differential by Date')
+
+    # Formatting date on X-axis
+    fig.autofmt_xdate()  # Auto-rotate the date labels
+
+    ax.grid(True)  # Add grid for better readability
+
+    # Display the plot in Streamlit
+    st.pyplot(fig)
 
 def main():
 
@@ -221,7 +252,8 @@ def main():
     with st.expander("Full Results"):
         try:
             results = conn.read(worksheet = active_user)
-            st.write(results)  
+            st.write(results)
+            plot_cumulative_score(results)
         except: 
             st.write("No Data")    
     
