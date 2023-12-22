@@ -1,6 +1,7 @@
 [theme]
-primaryColor = "#E694FF"
-backgroundColor = "#00172B"
-secondaryBackgroundColor = "#0083B8"
-textColor = "#DCDCDC"
-font = "sans-serif"
+font = "Helvetica Neue"
+primaryColor = "#0000FF"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F0F0F0"
+textColor = "#000000"
+sidebar = { "backgroundColor": "#FFFFFF", "contrast": 1.2 }
