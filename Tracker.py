@@ -176,7 +176,7 @@ def plot_cumulative_score(df):
     # Use Plotly for an interactive plot with hover functionality
     fig = px.line(df, x='Date', y='Cumulative Profit', 
                   title='Cumulative Profit by Date',
-                  labels={'Cumulative Profit': 'Cumulative Profit', 'Date': 'Date'},
+                  labels={'Cumulative Profit': 'Cumulative Profit'},
                   markers=True,
                   hover_data={'Cumulative Profit': False, 'Results': True})
 
