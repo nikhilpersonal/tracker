@@ -11,8 +11,7 @@ from streamlit_gsheets import GSheetsConnection
 
 
 conn = st.connection("gsheets", type=GSheetsConnection)
-if st.button("refresh"):
-    st.cache_data.clear()
+
 
 # Function to encode the image
 def encode_image(uploaded_image):
@@ -175,7 +174,8 @@ def main():
                 st.cache_data.clear()
                 st.experimental_rerun()
 
-    
+        if st.button("Refresh Data"):
+            st.cache_data.clear()
             
 
     rename(selected_user)
