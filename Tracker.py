@@ -214,7 +214,7 @@ def main():
             
 
     rename(selected_user)
-    with st.echo:
+    with st.echo():
         
         st.title("Nikh's Bet Tracker")
         st.subheader(f"Current User =  :green[{active_user}]")
