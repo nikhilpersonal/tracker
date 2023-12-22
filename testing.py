@@ -181,7 +181,7 @@ def main():
     rename(selected_user)
     
     # Upload image section
-    uploaded_images = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
+    uploaded_images = st.file_uploader("Upload an image", accept_multiple_files=True)
     
     # When the user uploads an image and clicks the 'Analyze' button
     if uploaded_images is not None and st.button("Analyze Image"):
