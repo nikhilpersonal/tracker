@@ -212,7 +212,7 @@ def plot_cumulative_score(df):
                   title='Cumulative Profit by Date',
                   labels={'Cumulative Profit': 'Cumulative Profit'},
                   markers=True,
-                  template="seaborn",
+                  template="plotly_dark",
                   hover_data={'Cumulative Profit': False, 'Results': True})
 
     # Add a horizontal line at 0
