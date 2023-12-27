@@ -181,7 +181,7 @@ def columns(total_wagered,total_won,record,count):
       
     with col6: 
         try:
-            s = total_won/t
+            s = profit/t
             s = round(s,2)
             st.metric(label = "units up/down", value = (f" {s} u "))
         except:
