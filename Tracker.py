@@ -157,6 +157,35 @@ def add_new_user(username, options):
     df = conn.update(worksheet = "usernames.csv", data = df)
     st.cache_data.clear()
     st.experimental_rerun()
+    
+def columns(total_wagered,total_won,record,count):
+    col1, col2= st.columns(2)
+    with col1:
+        st.metric(label = "Total Amount Wagered", value = "$" + str(total_wagered))
+    with col2:
+        st.metric(label = "Total Won", value = "$" + str(total_won))
+
+    col3, col4 = st.columns(2)
+    with col3:
+        st.metric(label = "Lifetime Record",  value =str(record)+ "-" +str(count))
+    
+    with col4:
+        profit = total_won-total_wagered
+        st.metric(label = "Profit", value =f"${profit}")
+        
+    col5, col6 = st.columns(2)
+    
+    with col5:
+        t = st.number_input("Unit Size", value = 5)
+      
+    with col6: 
+        try:
+            s = total_won/t
+            s = round(s,2)
+            st.metric(label = "units up/down", value = (f" {s} u "))
+        except:
+            s= 0
+            st.metric(label = "units up/down", value = str(s) + " u") 
 
 def plot_cumulative_score(df):
      # Data cleaning and preparation
@@ -182,6 +211,7 @@ def plot_cumulative_score(df):
                   title='Cumulative Profit by Date',
                   labels={'Cumulative Profit': 'Cumulative Profit'},
                   markers=True,
+                  template="seaborn"
                   hover_data={'Cumulative Profit': False, 'Results': True})
 
     # Add a horizontal line at 0
@@ -244,36 +274,7 @@ def main():
     
     total_wagered, total_won, record, count = summarize_csv_data()
 
-    col1, col2= st.columns(2)
-    with col1:
-        st.metric(label = "Total Amount Wagered", value = "$" + str(total_wagered))
-    with col2:
-        st.metric(label = "Total Won", value = "$" + str(total_won))
-
-    col3, col4 = st.columns(2)
-    with col3:
-        st.metric(label = "Lifetime Record",  value =str(record)+ "-" +str(count))
-    
-    with col4:
-        profit = total_won-total_wagered
-        profit = round(profit, 2)
-
-        st.metric(label = "Profit", value =f"${profit}")
-        
-    col5, col6 = st.columns(2)
-    
-    with col5:
-        t = st.number_input("Unit Size", value = 5)
-      
-    with col6: 
-        try:
-            s = profit/t
-            s = round(s,2)
-            st.metric(label = "units up/down", value = (f" {s} u "))
-        except:
-            s= 0
-            st.metric(label = "units up/down", value = str(s) + " u")
-    
+    columns(total_wagered,total_won,record,count)
     i = 0
     with st.expander("Full Results"):
         try:
