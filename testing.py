@@ -130,7 +130,34 @@ def summarize_csv_data():
     except:
         return 0, 0, 0, 0  # Return 0 if the CSV file does not exist
 
- 
+def columns():
+    col1, col2= st.columns(2)
+    with col1:
+        st.metric(label = "Total Amount Wagered", value = "$" + str(total_wagered))
+    with col2:
+        st.metric(label = "Total Won", value = "$" + str(total_won))
+
+    col3, col4 = st.columns(2)
+    with col3:
+        st.metric(label = "Lifetime Record",  value =str(record)+ "-" +str(count))
+    
+    with col4:
+        profit = total_won-total_wagered
+        st.metric(label = "Profit", value =f"${profit}")
+        
+    col5, col6 = st.columns(2)
+    
+    with col5:
+        t = st.number_input("Unit Size", value = 5)
+      
+    with col6: 
+        try:
+            s = total_won/t
+            s = round(s,2)
+            st.metric(label = "units up/down", value = (f" {s} u "))
+        except:
+            s= 0
+            st.metric(label = "units up/down", value = str(s) + " u") 
 
 
 def rename(option):
@@ -241,33 +268,8 @@ def main():
     
     total_wagered, total_won, record, count = summarize_csv_data()
 
-    col1, col2= st.columns(2)
-    with col1:
-        st.metric(label = "Total Amount Wagered", value = "$" + str(total_wagered))
-    with col2:
-        st.metric(label = "Total Won", value = "$" + str(total_won))
+    columns()
 
-    col3, col4 = st.columns(2)
-    with col3:
-        st.metric(label = "Lifetime Record",  value =str(record)+ "-" +str(count))
-    
-    with col4:
-        profit = total_won-total_wagered
-        st.metric(label = "Profit", value =f"${profit}")
-        
-    col5, col6 = st.columns(2)
-    
-    with col5:
-        t = st.number_input("Unit Size", value = 5)
-      
-    with col6: 
-        try:
-            s = total_won/t
-            s = round(s,2)
-            st.metric(label = "units up/down", value = (f" {s} u "))
-        except:
-            s= 0
-            st.metric(label = "units up/down", value = str(s) + " u")
     i = 0
     with st.expander("Full Results"):
         try:
