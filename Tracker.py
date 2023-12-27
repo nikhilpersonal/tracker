@@ -268,7 +268,7 @@ def main():
     with col6: 
         try:
             s = profit/t
-            s = str(s)
+            s = round(s,2)
             st.metric(label = "units up/down", value = (f" {s} u "))
         except:
             s= 0
