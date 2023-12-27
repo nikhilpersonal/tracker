@@ -238,11 +238,6 @@ def main():
                 st.write(content)
             except:
                 st.write("no image")
-        # Create a DataFrame
-        
-
-        # Save the DataFrame to CSV
-        
 
         # Show the analysis results
         
@@ -262,7 +257,12 @@ def main():
         try:
             results = conn.read(worksheet = active_user)
             results = results.dropna()
-            st.write(results)
+            update = st.data_editor(results)
+            if st.button('Update Data'):
+                conn.clear(worksheet= active_user)
+                update = conn.update(worksheet = active_user, data = update)
+                st.info("Data Updated!")
+                st.cache_data.clear()
             i = 1
         except: 
             st.write("No Data")    
