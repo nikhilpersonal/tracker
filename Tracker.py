@@ -171,6 +171,7 @@ def columns(total_wagered,total_won,record,count):
     
     with col4:
         profit = total_won-total_wagered
+        profit = round(profit,2)
         st.metric(label = "Profit", value =f"${profit}")
         
     col5, col6 = st.columns(2)
