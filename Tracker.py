@@ -61,7 +61,7 @@ def analyze_image_and_get_wager_results(uploaded_image):
       "OpenAI-Organization": f"{org}"
     }
 
-    prompt = "Analyze the image and provide the results in a table with columns 'Amount Wagered' and 'Amount Won' and 'Date'. DO NOT INCLUDE ANYTHING ELSE IN THE RESPONSE EXCEPT THE TABLE"
+    prompt = "Analyze the image and provide the results in a table with columns 'Amount Wagered' and 'Amount Won' and 'Date'. The image should only have one value for each column. You can typically find the information labeled with "total wagered", "Return" something along those lines. DO NOT INCLUDE ANYTHING ELSE IN THE RESPONSE EXCEPT THE TABLE"
 
     payload = {
       "model": "gpt-4-vision-preview",
