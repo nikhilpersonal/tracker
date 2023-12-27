@@ -130,7 +130,7 @@ def summarize_csv_data():
     except:
         return 0, 0, 0, 0  # Return 0 if the CSV file does not exist
 
-def columns():
+def columns(total_wagered,total_won,record,count):
     col1, col2= st.columns(2)
     with col1:
         st.metric(label = "Total Amount Wagered", value = "$" + str(total_wagered))
@@ -268,7 +268,7 @@ def main():
     
     total_wagered, total_won, record, count = summarize_csv_data()
 
-    columns()
+    columns(total_wagered,total_won,record,count)
 
     i = 0
     with st.expander("Full Results"):
