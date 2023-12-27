@@ -209,7 +209,7 @@ def main():
 
     rename(selected_user)
     
-    st.title("Nikh's Bet Tracker")
+    st.title("Nikhil's Bet Tracker")
     st.subheader("Current User = " + active_user)
     
     # Upload image section
