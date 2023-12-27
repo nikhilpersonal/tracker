@@ -157,7 +157,7 @@ def add_new_user(username, options):
     df = conn.update(worksheet = "usernames.csv", data = df)
     st.cache_data.clear()
     st.experimental_rerun()
-    
+
 def columns(total_wagered,total_won,record,count):
     col1, col2= st.columns(2)
     with col1:
@@ -211,7 +211,7 @@ def plot_cumulative_score(df):
                   title='Cumulative Profit by Date',
                   labels={'Cumulative Profit': 'Cumulative Profit'},
                   markers=True,
-                  template="seaborn"
+                  template="seaborn",
                   hover_data={'Cumulative Profit': False, 'Results': True})
 
     # Add a horizontal line at 0
