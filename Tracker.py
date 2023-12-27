@@ -221,7 +221,6 @@ def main():
         
     st.title("Nikh's Bet Tracker")
     st.subheader(f"Current User =  :green[{active_user}]")
-    st.divider()
     # Upload image section
     uploaded_images = st.file_uploader("Upload an image", accept_multiple_files=True)
     
