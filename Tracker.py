@@ -261,10 +261,10 @@ def main():
             if st.button('Update Data'):
                 conn.clear(worksheet= active_user)
                 update = conn.update(worksheet = active_user, data = update)
-                
+                st.cache_data.clear()
+
                 st.info("Data Updated!")
                 
-                st.cache_data.clear()
 
                 
             i = 1
